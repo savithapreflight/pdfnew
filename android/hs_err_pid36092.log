@@ -1,0 +1,14 @@
+ elapsed time: 84.810122 seconds (0d 0h 1m 24s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000029a1aad3000):  JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=36884, stack(0x000000faa0f00000,0x000000faa1000000)]
+
+
+Current CompileTask:
+C2:  84810  390       4       java.lang.String::getChars (54 bytes)
+
+Stack: [0x000000faa0f00000,0x000000faa1000000]
+[error occurred during error reporting (printing stack bounds), id 0xc00000fd, EXCEPTION_STACK_OVERFLOW (0xc00000fd) at pc=0x0000029a089e0f2d]
+
+V  [jvm.dll+0x62a3da]
