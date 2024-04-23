@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <EDOCS>
+  <RevDateTime>
+    2018-03-06T05:13:31
+</RevDateTime>
+<Version>2.9</Version>
+<Title>EDOCS</Title>
+<Key>EDOCS</Key>
+<Abbr>E Documentation</Abbr>
+<Items>
+    <Item>
+        <key>FLIGHT_OPS</key>
+        <title>FLT OPS</title>
+        <abbr>Flight Operations</abbr>
+        <reference>FLIGHT_OPS/FLIGHT_OPSIndex.json</reference>
+    </Item>
+    <Item>
+        <key>TRAINING</key>
+        <title>TRAINING</title>
+        <abbr>TRAINING</abbr>
+        <reference></reference>
+    </Item>
+    <Item>
+        <key>FLT_SAFETY</key>
+        <title>FLIGHT SAFETY</title>
+        <abbr>FLIGHT SAFETY</abbr>
+        
+    </Item>
+    <Item>
+        <key>ENGINEERING</key>
+        <title>ENGINEERING</title>
+        <abbr>ENGINEERING</abbr>
+        <reference></reference>
+    </Item>
+     <Item>
+        <key>ADMIN</key>
+        <title>ADMIN</title>
+        <abbr></abbr>
+        <reference>ADMIN/ADMINIndex.json</reference>
+    </Item>
+    
+</Items>
+</EDOCS>

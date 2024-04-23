@@ -19,7 +19,15 @@ import {
   onUpdateMainFlightRVSMDetails,
 } from './dbmanager/main-flight-details-table';
 import {onFetchMainRVSMData} from './dbmanager/main-rvsm-details-table';
+import FuelSheet from './screens/pages/fuel';
+import PdfDocuments from './pdf/dummypdf';
+ import Sign from './pdf/Signature';
+import Trimsheet from './pdf/Trimsheet';
+import HTMLtoPDFExample from './pdf/html';
+import PdfDesignTwo from './pdf/pdfDesignTwo';
+import Signature from './pdf/Sign';
 const Stack = createStackNavigator();
+
 
 export default AppNavigator = () => {
   const themeContext = useContext(ThemeContext);
@@ -68,45 +76,44 @@ export default AppNavigator = () => {
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    
+  }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
+     
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name="Pdf"
+          component={Trimsheet}
+          options={{headerShown: false}}
+        />
+    
+        <Stack.Screen
+          name="Sign"
+          component={Sign}
+          options={{headerShown: true,headerTitle: null }}
+        />
+        
+        <Stack.Screen name="PDFTWO" component={PdfDesignTwo} />
+      
 
         <Stack.Screen
           name="OFPLanding"
           component={OFPLanding}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
-          name="OFPComponent"
-          component={OFPComponent}
-          options={{headerShown: false}}
+          name="Fuel Briefing"
+          component={FuelSheet}
+          options={{headerShown: true}}
         />
+
+     
       </Stack.Navigator>
     </NavigationContainer>
-    //  <NavigationContainer>
-    // <Stack.Navigator>
-    //         {isLoggedIn ? (
-    //           <Stack.Screen name="OFPLanding" component={OFPLanding}  options={{ headerShown: false }} />
-    //         ) : (
-    //           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-    //         )}
-    //         <Stack.Screen name="OFPComponent" component={OFPComponent} options={{ headerShown: false }} />
-    //       </Stack.Navigator>
-    // {/* {!isLoggedIn ?
-    //     <Stack.Navigator screenOptions={{ headerShown: false }}>
-    //         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-    //     </Stack.Navigator>
-    //     :
-    //     <Stack.Navigator >
-    //         <Stack.Screen name="OFPLanding" component={OFPLanding} options={{ headerShown: false }} />
-    //     </Stack.Navigator>
-    // }
-    // <Stack.Screen name="OFPComponent" component={OFPComponent} options={{ headerShown: false }} /> */}
-    // </NavigationContainer >
+    
   );
 };

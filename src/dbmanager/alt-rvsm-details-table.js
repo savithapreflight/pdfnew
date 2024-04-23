@@ -33,13 +33,13 @@ export const onCreateAltFlightRVSMTable =async () => {
             txn.executeSql(`CREATE TABLE IF NOT EXISTS ${localDB.tableName.altFlightRVSMTable} (EmployeeCode TEXT, FlightNumber TEXT,Sector TEXT, Time Text,ALT1 TEXT, STBYALT TEXT, ALT2 TEXT, isPushed TEXT)`,
                 [],
                 (_, result) => {
-console.log('result needed',result)
+// console.log('result needed',result)
                     console.log("onCreateAltFlightRVSMTable successful");
                     resolve("onCreateAltFlightRVSMTable successful");
 
                 },
                 (_, err) => {
-                    console.log('result needed',err)
+                    // console.log('result needed',err)
                     console.log('onCreateAltFlightRVSMTable,err', err);
                     reject(err);
                 }

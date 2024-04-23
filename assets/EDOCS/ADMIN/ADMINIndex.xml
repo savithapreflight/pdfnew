@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<Items>
+    <Item>
+        <key>crlsAdmin</key>
+        <title>CIRCULARS</title>
+        <abbr></abbr>
+        <reference></reference>
+    </Item>
+    <Item>
+        <key>hrpolicies</key>
+        <title>HR POLICIES</title>
+        <abbr></abbr>
+        <reference>HRPolicy.docx</reference>
+        
+    </Item>
+    <Item>
+        <key>forms</key>
+        <title>FORMS</title>
+    </Item>
+</Items>
+
+

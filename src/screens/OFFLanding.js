@@ -30,18 +30,247 @@ import { onCreateFaultReportTable } from '../dbmanager/fault-report-table';
 import { useNavigation } from '@react-navigation/native';
 import Details  from '../screens/Latest'
 import NetwotkAccess from '../Utilis/NetworkAccess';
+import YourComponent, { InsertData, createTableAndInsertData, insertDataToTable, insertrosterData, logTableLength, onCreateRosterTable, onFetchRosterData } from '../dbmanager/roster-table';
+import { openDatabase } from 'react-native-sqlite-storage';
+import SQLite from 'react-native-sqlite-storage';
+import { getRosterDetailsApi } from '../api/rosterApi';
+import { apiKeys } from '../API-Axios/endpoint';
+import { Axios } from '../API-Axios/config';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const OFPLanding = ( props ) => {
+ createTableAndInsertData();
+ InsertData();
+ logTableLength();
   const navigation = useNavigation()
     const themeContext = useContext(ThemeContext);
     const { theme, OFPData, Orientation, setOFPDataMethod, headerClickedIndex } = themeContext;
-
-  
     const [headerSelectedIndex, setHeaderSelectedIndex] = useState(0);
     const [subHeaderSelectedIndex, setSubHeaderSelectedIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [allFlights, setAllFlights] = useState([]);
     const [activeItemIndex, setActiveItemIndex] = useState(0);
     const [scanned, setScanned] = useState(false);
+    const [flightNo,setFlightNo] = useState('');
+    const [depart,setDepart] = useState('');
+    const [arriv,setArriv] = useState('');
+    const [acType,setAcType] = useState('');
+    const [acR,setAcR] = useState('');
+    const [etA,setEtA] = useState('');
+    const [etD,setEtD] = useState('');
+
+    
+    const handlefuel = (flightNo, depart,arriv,acType) => {
+      console.log(`Handling fuel for Flight ${flightNo} departing from ${depart},${arriv}`);
+      navigation.navigate('Fuel Briefing', { flightNo, depart,arriv,acType });
+    };
+    // useEffect(()=>{
+    //   fetchData();
+      
+    // })
+
+
+
+    const rosterdata =  async () => {
+  
+      const authData = await AsyncStorage.getItem('@auth');
+      const authObject = JSON.parse(authData);
+      const tokens = authObject?.token
+        
+          try {
+             
+            const empCode = await AsyncStorage.getItem('@userIds');
+            console.log(empCode, "empcode");
+
+            
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth() + 1;
+            const currentYear = currentDate.getFullYear();
+
+            // Start Date (today's date)
+            const startDate = `${String(currentMonth).padStart(2, '0')}/${String(currentDate.getDate()).padStart(2, '0')}/${currentYear}`;
+
+            // End Date (today's date)
+            const endDate = startDate;
+
+            // Modified Date (yesterday's date in the previous year)
+            const lastDateOfPreviousYear = new Date(currentYear - 1, currentMonth - 1, currentDate.getDate());
+            const modifiedDate = `${String(lastDateOfPreviousYear.getMonth() + 1).padStart(2, '0')}/${String(lastDateOfPreviousYear.getDate()).padStart(2, '0')}/${currentYear - 1}`;
+
+            console.log("Start Date:", startDate);
+            console.log("End Date:", endDate);
+            console.log("Modified Date:", modifiedDate);
+
+
+           
+            const token = tokens
+            
+            const apiUrl = `http://20.204.102.191/cstar.API/RosterAppDetails/${empCode}?StartDate=${startDate}&EndDate=${endDate}&ModifiedDate=${modifiedDate}`;
+            console.log(apiUrl,"roster url")
+            
+            
+            const response = await Axios.get(apiUrl, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+       
+            if (response.status === 200) {
+              const data = response.data;
+              console.log("Response data roster:", data);
+              const today = new Date().toISOString().split('T')[0];
+              const filteredData = data.filter(item => item.flightDate.split('T')[0] === today);
+
+              // console.log("Response data for today's flights:", filteredData);
+
+              const flightNos = filteredData.map(item => item.flightNo);
+              const departure = filteredData.map(item => item.flightFrom);
+              const arrival = filteredData.map(item => item.flightTo);
+              const aircraft = filteredData.map(item => item.aircraftType);
+              // console.log("Flight Numbers for today's flights:", flightNos);
+              setFlightNo(flightNos)
+              setDepart(departure);
+              setArriv(arrival);
+              setAcType(aircraft);
+
+
+  return filteredData;
+ 
+            } else {
+              console.log('Error fetching data. Unexpected response:', response.status);            
+              return null; 
+            }
+          } catch (log) {
+            console.log('Error fetching data:', log);
+            return null; 
+          }
+        };
+
+
+        const fetchData = async () => {
+          const rosterDataResult = await rosterdata();
+          if (rosterDataResult !== null) {
+            setDepart(rosterDataResult.map(item => item.flightFrom));
+            setArriv(rosterDataResult.map(item => item.flightTo));
+            setFlightNo(rosterDataResult.map(item => item.flightNo));
+            setAcType(rosterDataResult.map(item => item.aircraftType));
+          }
+        };
+        
+        useEffect(() => {
+          fetchData();
+        }, []);
+        
+        useEffect(() => {
+          if (depart.length > 0 && arriv.length > 0 && flightNo.length > 0) {
+            loadsheet();
+          }
+        }, [depart, arriv, flightNo]); 
+        
+        
+
+
+        const loadsheet = async () => {
+          try {
+            const authData = await AsyncStorage.getItem('@auth');
+            const authObject = JSON.parse(authData);
+            const tokens = authObject?.token;
+        
+            const currentDate = new Date().toISOString().split('T')[0] + 'T00:00:00';
+            const etaValues = [];
+            const acreg = [];
+            const etdValues = [];
+        
+            for (let i = 0; i < depart.length; i++) {
+              const source = depart[i];
+              const destination = arriv[i];
+              const flightno = flightNo[i];
+        
+              const apiUrl = `http://20.204.102.191/lOADSHEET.API/LoadSheet/FlightData?FlightDate=${currentDate}&FlightNo=${flightno}&Source=${source}&Destination=${destination}`;
+              console.log(apiUrl, "url load");
+        
+              const token = tokens;
+        
+              try {
+                const response = await axios.get(apiUrl, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                });
+        
+                if (response.status === 200) {
+                  const data = response.data;
+                  console.log(data, "response 200 data");
+        
+                  data.forEach((item) => {
+                    const etaDate = new Date(item.eta);
+                    const hours = etaDate.getHours().toString().padStart(2, '0');
+                    const minutes = etaDate.getMinutes().toString().padStart(2, '0');
+                    const eta = `${hours}:${minutes}`;
+        
+                    const etdDate = new Date(item.etd);
+                    const hoursetd = etdDate.getHours().toString().padStart(2, '0');
+                    const minutesetd = etdDate.getMinutes().toString().padStart(2, '0');
+                    const etd = `${hoursetd}:${minutesetd}`;
+        
+                    const reg = item.regnNo;
+        
+                    console.log(`ETA for Flight ${flightno}: ${eta} : ${etd} : ${reg}`);
+        
+                    etaValues.push(eta);
+                    etdValues.push(etd);
+                    acreg.push(reg);
+                  });
+                } else if (response.status === 404) {
+                  console.warn(`No data found for Flight ${flightno}`);
+                  // For flights with no data, push null values
+                  etaValues.push(null);
+                  etdValues.push(null);
+                  acreg.push(null);
+                } else {
+                  console.log('Error fetching data. Unexpected response:', response.status);
+                  // For other logs, push null values
+                  etaValues.push(null);
+                  etdValues.push(null);
+                  acreg.push(null);
+                }
+              } catch (log) {
+                console.log('Error fetching data acreg:', log.response || log.message || log);
+                // For flights with logs, push null values
+                etaValues.push(null);
+                etdValues.push(null);
+                acreg.push(null);
+              }
+            }
+        
+            console.log('All ETA Values:', etaValues);
+            console.log('All ETD Values:', etdValues);
+            console.log('All RegNo Values:', acreg);
+            console.log(acreg[0], '0th Acreg');
+        
+            // Assuming setAcR, setEtA, and setEtD are state-setting functions
+            setAcR([...acreg]); // Ensure a new array reference to trigger React to update
+            setEtA([...etaValues]);
+            setEtD([...etdValues]);
+        
+            console.log('ETA 0th value:', etaValues[0]);
+            console.log('ETD 1st value:', etdValues[1]);
+        
+            return etaValues; // Return the array of all eta values
+          } catch (log) {
+            console.log('Error fetching data acreg:', log.response || log.message || log);
+            return null;
+          }
+        };
+        
+        
+        
+        
+        
+        
+        
+
+
 
     /**
    * Request external storage read permission
@@ -58,7 +287,7 @@ const OFPLanding = ( props ) => {
       );
       return granted == PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
-      //Handle this error
+      //Handle this log
       return false;
     }
   };
@@ -140,13 +369,13 @@ const OFPLanding = ( props ) => {
   const syncAllData = async () => {
  
     try {
-       setLoading(true);
+      //  setLoading(true);
 
       await onCreateMainFlightDetailsTable();
       await onCreateALTFlightDetailsTable();
      await onCreateMainRVSMTable();
     await onCreateAltFlightRVSMTable();
-      // await onCreateFaultReportTable();
+
 
       // const { data, status, statusText } = await api.get(API + '/Latest_CFP.json', '')
 const arrDetails=[Details]
@@ -166,62 +395,17 @@ console.log('detailss',arrDetails)
     const sql = `SELECT DISTINCT FlightNumber,Sector,Status,ApproachTime FROM mainFlightFlightPlanTable1 ORDER BY LOWER(FlightNumber)`
       const allFlightDetails = await onFetchMainFlightDetailsData(sql);
       console.log('details needede needed ',allFlightDetails)
+     
         setAllFlights(allFlightDetails);
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.log('sync all data error==', err);
+      console.log('sync all data log==', err);
     
     }
   };
 
-  /**
-   * 
-   * @param {*} url 
-   */
-
-  const syncAllQRCodeData = async (url) => {
-
-    try {
-      setLoading(true);
-
-      const createMainFlightTable = await onCreateMainFlightDetailsTable();
-      const createALTFlightTable = await onCreateALTFlightDetailsTable();
-      const createMainFlightRVSMTable = await onCreateMainRVSMTable();
-      const createAltFlightRVSMTable = await onCreateAltFlightRVSMTable();
-      const createFaultReportTable = await onCreateFaultReportTable();
-
-      const { data, status, statusText } = await api.get(url, '');
-
-      console.log('data===', data.FLIGHTFOLDER.OPR_ID[0]);
-
-      const newModifiedFlightData = createJsonWithStatus(data.FLIGHTFOLDER.OPR_ID);
-      console.log('newModifiedFlightData ==', newModifiedFlightData);
-
-      // Use this data throughout the app
-      setOFPDataMethod(data);
-
-      const { MAINFLTPLAN, ALT1FP } = data.FLIGHTFOLDER.OPR_ID[0];
-      
-
-      // const insertTable = await onInsertMainFlightDetailsData(MAINFLTPLAN.ROW);
-      const insertTable = await onInsertMainFlightDetailsData(newModifiedFlightData.MAINFLIGHTDATA);
-
-      // const insertAltFlightTable = await onInsertALTFlightDetailsData(ALT1FP.ROW);
-       const insertAltFlightTable = await onInsertALTFlightDetailsData(newModifiedFlightData.ALTFLIGHTDATA);
-
-      let sql = 'SELECT FlightNumber,Sector,Status from mainFlightFlightPlanTable1'
-      const allFlightDetails = await onFetchMainFlightDetailsData(sql);
-      console.log('all',allFlightDetails)
-
-      setAllFlights(allFlightDetails);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      console.log('sync all data error==', err);
-      alert('Sync failed');
-    }
-  };
+ 
 
   /**
      * 
@@ -253,7 +437,7 @@ console.log('detailss',arrDetails)
         console.log('called set allFlights method');
       });
     } catch (err) {
-      console.log('loadInitialData error', err);
+      console.log('loadInitialData log', err);
     }
   };
 
@@ -324,10 +508,13 @@ const createJsonWithStatus = (flightData) => {
         <View style={{ ...styles[`listHeaderStyle${theme}`], width: `${itemWidth * 2}%`, justifyContent: 'center' }}>
           <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600', textAlignVertical: 'center' }}>WX</Text>
         </View>
+        <View style={{ ...styles[`listHeaderStyle${theme}`], width: `${itemWidth * 3}%`, justifyContent: 'center' }}>
+          <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600', textAlignVertical: 'center' }}>FUEL BRIEFING</Text>
+        </View>
         <View style={{ ...styles[`listHeaderStyle${theme}`], width: `${itemWidth * 2}%`, justifyContent: 'center' }}>
           <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600', textAlignVertical: 'center' }}>NOTAM</Text>
         </View>
-        <View style={{ ...styles[`listHeaderStyle${theme}`], width: `${itemWidth * 4}%`, justifyContent: 'center' }}>
+        <View style={{ ...styles[`listHeaderStyle${theme}`], width: `${itemWidth * 2}%`, justifyContent: 'center' }}>
           <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600', textAlignVertical: 'center' }}></Text>
         </View>
       </View>
@@ -358,18 +545,34 @@ const createJsonWithStatus = (flightData) => {
         let activeItemBgColor = theme === 'Dark' ? '#333' : colors.LightestBlue;
       
         return (
+          <View>
+            {flightNo[0] && (
+
           <TouchableOpacity style={{ ...styles[`listItemContainer${theme}`], borderTopColor: index === 0 ? borderColor : null, borderTopWidth: index === 0 ? 1 : 0 }}>
-            <View style={{ ...styles[`listItemStyle${theme}`, `firstListItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : firstItemNonActiveBgColor }}>
-              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600' }}>{item.FlightNumber}</Text>
+          <View style={{ ...styles[`listItemStyle${theme}`, `firstListItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : firstItemNonActiveBgColor }}>
+  <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600' }}>
+        {flightNo[0]}
+      </Text>
+</View>
+
+            <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                {acR[0]}
+                </Text>
             </View>
             <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
-              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{item.Status}</Text>
-            </View>
-            <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
-              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{item.Sector} </Text>
+
+ <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+        {depart[0]}-{arriv[0]}
+      </Text>
+
+
+              
             </View>
             <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
-              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{item.ApproachTime}</Text>
+              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                {etD[0]}-{etA[0]}
+                </Text>
             </View>
             <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
               <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{}</Text>
@@ -377,13 +580,177 @@ const createJsonWithStatus = (flightData) => {
             <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
               <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> {} </Text>
             </View>
-            <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
-              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{}</Text>
+            <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+              <TouchableOpacity 
+                onPress={() => handlefuel(flightNo[0], depart[0],arriv[0],acType[0])}
+
+              
+              >
+
+              <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>AVAILABLE</Text>
+              </TouchableOpacity>
             </View>
             <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 4}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
               <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> </Text>
             </View>
           </TouchableOpacity>
+            )}
+
+      {flightNo[1] && (
+
+                <TouchableOpacity style={{ ...styles[`listItemContainer${theme}`], borderTopColor: index === 0 ? borderColor : null, borderTopWidth: index === 0 ? 1 : 0 }}>
+                <View style={{ ...styles[`listItemStyle${theme}`, `firstListItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : firstItemNonActiveBgColor }}>
+
+      <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600' }}>
+              {flightNo[1]}
+            </Text>
+      </View>
+
+                  <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                    <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                      {acR[1]}
+                      </Text>
+                  </View>
+                  <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                  
+       
+      <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+              {depart[1]}-{arriv[1]}
+            </Text>
+
+                    
+                  </View>
+                  <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                    <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                    {etD[1]}-{etA[1]}
+                      </Text>
+                  </View>
+                  <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                    <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{}</Text>
+                  </View>
+                  <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                    <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> {} </Text>
+                  </View>
+                  <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                    <TouchableOpacity 
+                    onPress={() => handlefuel(flightNo[1], depart[1],arriv[1],acType[1])}
+                    >
+
+                    <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>AVAILABLE</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 4}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                    <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> </Text>
+                  </View>
+                </TouchableOpacity>
+      )}
+
+      {flightNo[2] && (
+
+            <TouchableOpacity style={{ ...styles[`listItemContainer${theme}`], borderTopColor: index === 0 ? borderColor : null, borderTopWidth: index === 0 ? 1 : 0 }}>
+            <View style={{ ...styles[`listItemStyle${theme}`, `firstListItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : firstItemNonActiveBgColor }}>
+
+
+            <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600' }}>
+            {flightNo[2]}
+            </Text>
+            </View>
+
+              <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                  {acR[2]}
+                  </Text>
+              </View>
+              <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+
+
+            <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+            {depart[2]}-{arriv[2]}
+            </Text>
+
+                
+              </View>
+              <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                {etD[2]}-{etA[2]}
+                  </Text>
+              </View>
+              <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{}</Text>
+              </View>
+              <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> {} </Text>
+              </View>
+              <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                <TouchableOpacity 
+                onPress={() => handlefuel(flightNo[2], depart[2],arriv[2],acType[2])}
+                >
+
+                <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>AVAILABLE</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 4}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> </Text>
+              </View>
+            </TouchableOpacity>
+      )}
+
+
+      {flightNo[3] && (
+
+              <TouchableOpacity style={{ ...styles[`listItemContainer${theme}`], borderTopColor: index === 0 ? borderColor : null, borderTopWidth: index === 0 ? 1 : 0 }}>
+              <View style={{ ...styles[`listItemStyle${theme}`, `firstListItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : firstItemNonActiveBgColor }}>
+              
+
+              <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`], fontWeight: '600' }}>
+              {flightNo[3]}
+              </Text>
+              </View>
+
+                <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                  <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                    {acR[3]}
+                    </Text>
+                </View>
+                <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                
+              
+
+              <Text key={index} style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+              {depart[3]}-{arriv[3]}
+              </Text>
+
+                  
+                </View>
+                <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                  <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>
+                  {etD[3]}-{etA[3]}
+                    </Text>
+                </View>
+                <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                  <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>{}</Text>
+                </View>
+                <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 2}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                  <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> {} </Text>
+                </View>
+                <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 3}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                  <TouchableOpacity 
+                 onPress={() => handlefuel(flightNo[3], depart[3],arriv[3],acType[3])}
+                  >
+
+                  <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}>AVAILABLE</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ ...styles[`listItemStyle${theme}`], width: `${itemWidth * 4}%`, backgroundColor: isActiveItem ? activeItemBgColor : null }}>
+                  <Text style={{ ...styles[`textStyle${theme}`], ...styles[`textSize${Orientation}`] }}> </Text>
+                </View>
+              </TouchableOpacity>
+      )}
+
+          {/* {showFuelSheet && <FuelSheet />} */}
+          
+         
+          </View>
         );
     }
 
@@ -434,7 +801,7 @@ const createJsonWithStatus = (flightData) => {
           <TouchableOpacity
             style={{ ...styles[`listItemContainer${theme}`], borderTopColor: index === 0 ? borderColor : null, borderTopWidth: index === 0 ? 1 : 0 }}
             onPress={() => {
-              navigation.navigate('OFPComponent',{ selectedFlight: item });
+              navigation.navigate('Fuel Briefing',{ selectedFlight: item });
             }}
           >
             <View style={{ ...styles[`listItemStyle${theme}`], ...styles[`firstListItemStyle${theme}`], width: '20%', backgroundColor: isActiveItem ? activeItemBgColor : firstItemNonActiveBgColor }}>
@@ -511,8 +878,8 @@ const createJsonWithStatus = (flightData) => {
             </TouchableOpacity>
             <TouchableOpacity style={{ ...styles[`activeTabStyle${theme}`], paddingVertical: verticalPaddHeight, width: `${itemWidth * 2}%` }} onPress={() => {
 
-                setIsLoggedInnValue(false);
-                storeData('isAutoLogin', 'false');
+                // setIsLoggedInnValue(false);
+                // storeData('isAutoLogin', 'false');
                 navigation.navigate('Login');
 
             }} >
@@ -780,7 +1147,3 @@ const createJsonWithStatus = (flightData) => {
 })
 
 export default OFPLanding;
-
-
-
-

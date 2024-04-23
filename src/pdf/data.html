@@ -1,0 +1,704 @@
+const datas={
+    "FlightNo": "SGTEST1",
+    "DepArpt": "BLR",
+    "ArrArpt": "DEL",
+    "AcftType": "B738",
+    "AcftRegn": "VT-AAZ",
+    "ErrorMessage": "",
+    "AcftConfig": "SF",
+    "UserId": "anil123",
+    "FlightDate": "2024-04-17T00:00:00",
+    "Zfw": 48906.64,
+    "MZfw": 62731,
+    "Rtow": 70360,
+    "Otow": 79015,
+    "Tow": 56906.64,
+    "MTow": 79015,
+    "ZfwCG": 14.5938812612663,
+    "TowCG": 17.227542757973012,
+    "ZfwCGFwdLimit": 10,
+    "ZfwCGAftLimit": 28.427934056141392,
+    "CompTotalWeight": 1000,
+    "CabinTotalWeight": 0,
+    "TrafficTotalWeight": 9500,
+    "TotalBaggage": 0,
+    "TotalCargo": 0,
+    "OnwardAdult": 0,
+    "OnwardChild": 0,
+    "ThruCheckedPax": 0,
+    "TotCheckedInPax": 0,
+    "Oew": 39406.64,
+    "OewIndex": 24,
+    "Fob": 8000,
+    "TripFuel": 4000,
+    "Olw": 66360,
+    "TowCGFwdLimit": 10,
+    "TowCGAftLimit": 30.804289321253528,
+    "LwCGFwdLimit": 10,
+    "LwCGAftLimit": 29.61611168869746,
+    "TargetCG": 25.690663999999998,
+    "StdCockpitCrewCnt": 2,
+    "StdCabinCrewCnt": 0,
+    "AdjustCockpitOccupant": 0,
+    "AdjustFwdGalleyWt": 0,
+    "AdjustAftGalleyWt": 0,
+    "AdjustCabinBaggageWt": 0,
+    "AdjustFwdJumpSeat": 0,
+    "AdjustMidJumpSeat": 0,
+    "AdjustAftJumpSeat": 0,
+    "AdjustSupernumeary": 0,
+    "TrimSheetEdNo": 0,
+    "AdjustCrewInCabins": [],
+    "AdultInCabins": [],
+    "ChildInCabins": [],
+    "InfantInCabins": [],
+    "LoadDistArryLoadType": [
+      ""
+    ],
+    "PalletType": [
+      "NO FIT",
+      "NO FIT",
+      "NO FIT",
+      "NO FIT",
+      "NO FIT",
+      "PAJ",
+      "PAG",
+      "PAJ",
+      "PAG",
+      "NO FIT",
+      "NO FIT",
+      "NO FIT"
+    ],
+    "CabinStdLimits": [],
+    "CabinStdCargoLimits": [],
+    "CompartmentWeightsBag": [
+      0,
+      0,
+      0,
+      1000,
+      0,
+      0
+    ],
+    "CompartmentWeightsCargo": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "CompStdLimits": [
+      "552",
+      "336",
+      "2670",
+      "4086",
+      "361",
+      "402"
+    ],
+    "CompartmentWeights": [
+      0,
+      0,
+      0,
+      1000,
+      0,
+      0
+    ],
+    "LoadDistArrySector": [
+      "DEL"
+    ],
+    "LoadDistArryEst": [
+      "1000"
+    ],
+    "LoadDistArryNature": [
+      "B"
+    ],
+    "LoadDistArryLoc": [
+      "4"
+    ],
+    "LoadDistArryFinalDesti": [
+      ""
+    ],
+    "AdjustTotalIndex": 0,
+    "ZfwIndex": 59.235,
+    "TowIndex": 68.235,
+    "LwIndex": 60.235,
+    "LwCG": 14.524135179834868,
+    "dTblThrusts": [],
+    "dTblDOWAdjusts": [],
+    "dTblLDMMainDecks": [],
+    "dTblLDMLowerDecks": [],
+    "TrimOfficer": "ANIL KUMAR M R",
+    "LoadOfficer": "TEST LO 1",
+    "Captain": "TEST CPT 1",
+    "EditionNum": "01",
+    "MaxZfwComp": 62360,
+    "SpecialInstr": "",
+    "LimitFacZfw": "",
+    "LimitFacTow": "",
+    "LimitFacLw": "L",
+    "LeaseType": "DRY",
+    "AcftPurpose": "FREIGHTER",
+    "PalletStdLimits": [
+      "2368",
+      "2631",
+      "2948",
+      "2948",
+      "4536",
+      "4536",
+      "2948",
+      "2948",
+      "2948",
+      "2268",
+      "2268",
+      "1588"
+    ],
+    "PalletNames": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A9",
+      "A10",
+      "A11",
+      "K12"
+    ],
+    "CompNames": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6"
+    ],
+    "PalletWeights": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "2000",
+      "2500",
+      "2000",
+      "2000",
+      "",
+      "",
+      ""
+    ],
+    "PalletSector": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "DEL",
+      "DEL",
+      "DEL",
+      "DEL",
+      "",
+      "",
+      ""
+    ],
+    "PalletNo": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "1",
+      "2",
+      "3",
+      "4",
+      "",
+      "",
+      ""
+    ],
+    "CompartmentSectors": [
+      "",
+      "",
+      "",
+      "DEL",
+      "",
+      ""
+    ],
+    "cumLoadOutput": {
+      "CumFwdHeaders": "FWD HOLD 1, FWD HOLD 2, FWD HOLD 3, A1, A2, A3, A4, A5, A6",
+      "CumAftHeaders": "AFT HOLD 4, AFT HOLD 5, AFT HOLD6, A7, A8, A9, A10, A11, K12",
+      "CumFwdMaxLimit": 14112,
+      "CumAftMaxLimit": 13718,
+      "CumFwdMaxActual": 2000,
+      "CumAftMaxActual": 6500
+    },
+    "PalletsTotalWeight": 8500,
+    "PalletsStr": "$A1$NO FIT$$$$$$$$#$A2$NO FIT$$$$$$$$#$A3$NO FIT$$$$$$$$#$A4$NO FIT$$$$$$$$#$A5$NO FIT$$$$$$$$#DEL$A6$PAJ$1$100$1900$2000$C$$$#DEL$A7$PAG$2$101$2399$2500$C$$$#DEL$A8$PAJ$3$100$1900$2000$C$$$#DEL$A9$PAG$4$101$1899$2000$C$$$#$A10$NO FIT$$$$$$$$#$A11$NO FIT$$$$$$$$#$K12$NO FIT$$$$$$$$#",
+    "SuggestionMessage": " ",
+    "IsNewFlight": false,
+    "CargoOnSeatStr": "",
+    "CabinCompWeights": [],
+    "TrimGeneratedUTCTime": "2024-04-17T07:28:32.2643846Z",
+    "TrimRecallNum": "TRMSGTEST1BLRDEL17Apr20241258344305EDW01",
+    "LIRRecallNum": "LPINSGTEST1BLRDEL17Apr20241258344893",
+    "SaltArchiveId": "105",
+    "TrimOffSaltNo": "123",
+    "ToleranceLimits": "+ / - 400 KG OF ACM / SNY / CARGO IN LOWER DECK AND + / - 1000 KG FUEL.",
+    "DGCALetterNum": "DEL-11011(13)/9/2019-DAW-NR/1348 DATED 30-12-2020"
+  }
+
+
+<div style="padding:2px; background-color: #fff; margin:3px;">
+    <div style="padding: 5px; background-color: #fff;">
+        <div style="text-align: center; color: black; letter-spacing: 1px; font-weight: bold; margin-bottom: 10px; text-decoration: underline;">
+          SPICEJET LOADSHEET
+        </div>
+        <div style="display: flex; flex-direction: row;">
+          <div style="flex:1;">FROM/TO</div>
+          <div style="flex:1;">FLT/DATE</div>
+          <div style="flex:1;">REG</div>
+          <div style="flex:1;">VER/CFG</div>
+          <div style="flex:1;">CREW</div>
+          <div style="flex:1;">DATE</div>
+          <div style="flex:1;">TIME</div>
+          <div style="flex:1;">EDNO</div>
+        </div>
+       
+      </div>
+      <div style="display: flex; flex-direction: row;">
+      <div style="flex:1;text-align: center">${datas.DepArpt}-${datas.ArrArpt}</div>
+      <div style="flex:1;text-align: center">${datas.FlightNo}</div>
+      <div style="flex:1;text-align: center">${datas.AcftRegn}</div>
+      <div style="flex:1;text-align: center">${datas.AcftType}/ ${datas.AcftConfig}</div>
+      <div style="flex:1;text-align: center">${actcrewstr}</div>
+      <div style="flex:1;text-align: center">${formatDate(datas.TrimGeneratedUTCTime)}</div>
+      <div style="flex:1;text-align: center">${formatTime(datas.TrimGeneratedUTCTime)}</div>
+      <div style="flex:1;text-align: center">${datas.EditionNum}</div>
+    </div>
+    <div class="container">
+    <span class="column1"  style="font-weight: normal;">
+        ALL WEIGHTS IN KILOGRAMS
+    </span>
+    <span class="column">
+        0
+    </span>
+    <div style="flex: 4;flex-direction:row; justify-content:space-evenly;">
+        ${datas.CompartmentWeights.map((item, index) => `
+            <p key="${index}" class="column" style="flex:1; font-weight: normal">
+                CPT${index + 1}
+            </p>
+        `).join('')}
+    </div>
+</div>
+  
+<div class="container">
+<p class="column1">LOAD IN COMPARTMENTS</p>
+<p class="column">${datas.CompTotalWeight}</p>
+<div style="flex:4;flex-direction:row;">
+    ${datas.CompartmentWeights.map((item, index) => `
+    <p key="${index}" class="column">${item}</p>
+`).join('')}</div>
+
+</div>
+<div class="container">
+<span class="column1" style="font-weight: normal; ">CABIN BAGGAGE</span>
+<span class="column" style="font-weight: normal;text-align:right">${datas.AdjustCabinBaggageWt}</span>
+<div style="flex:4;flex-direction:row;">
+    ${datas.AcftPurpose !== 'FREIGHTER' ? `
+    <span class="column" style="font-weight: normal;">ADULT</span>
+    <span class="column" style="font-weight: normal;">CHILD</span>
+    <span class="column" style="font-weight: normal;">INFANT</span>
+    <span class="column" style="font-weight: normal;">TOTAL</span>
+  ` : ''}
+</div>
+
+</div>
+<div class="container">
+<span  class="column1" style="font-weight: normal; flex: 4;">PASSENGER WEIGHT</span >
+<span  class="column"></span >
+    <div style="flex:4;flex-direction:row;">
+        ${datas.AcftPurpose !== 'FREIGHTER' ? `
+        <span class="column">${parseInt(totalAdult)}</span >
+        <span class="column">${parseInt(totalChild)}</span >
+        <span  class="column">${parseInt(totalInfant)}</span >
+        <span class="column" style="font-weight: normal">${parseInt(totalAdult) + parseInt(totalChild) + parseInt(totalInfant)}</span >
+      ` : ''}
+    </div>
+
+</div>
+
+
+<div class="container">
+<p class="column1"  style="font-weight: normal;">TOTAL TRAFFIC WEIGHT</p>
+<p class="column" style="font-weight: normal;text-align:right">${datas.TrafficTotalWeight}</p>
+<div style="flex:4;flex-direction: row;">
+    <p class="column" style="font-weight: normal;"></p>
+    <p class="column" style="font-weight: normal;"></p>
+    <p class="column" style="font-weight: normal;"></p>
+    <p class="column" style="font-weight: normal;"></p>
+    ${datas.AcftPurpose !== 'FREIGHTER' ? '<p class="column">POB</p>' : ''}
+</div>
+
+</div>
+<div class="container">
+      <p class="column1" style="font-weight: normal; flex: 4;">DRY OPERATING WEIGHT</p>
+      <p class="column" style="font-weight: normal;text-align:right">${datas.Oew.toFixed()}</p>
+     <div style="flex: 4;flex-direction: row;"></div>
+      
+  </div>
+
+  <div class="container">
+  <p   class="column1"  >ZERO FUEL WEIGHT ACTUAL</p>
+  <p   class="column" style="text-align: right;">${datas.Zfw.toFixed()}</p>
+  <p   class="column" style="flex: 2; font-weight: normal; font-weight: normal;">MAX ${datas.MZfw}</p>
+  
+  <div style="flex:4;flex-direction: row;">
+    <p   class="column" style="font-weight: normal;"></p>
+    <p   class="column" style="font-weight: normal;"></p>
+    <p  class="column" style="font-weight: normal;"></p>
+    <p  class="column" style="font-weight: normal;"></p>
+
+  </div>
+ 
+</div>
+
+
+<div class="container">
+<span class="column1" style="font-weight: normal; ">TAKE OFF FUEL</span>
+<span class="column" style="font-weight: normal;text-align:right">${datas.Fob}</span>
+<div style="flex: 4;flex-direction: row;">
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+
+</div>
+
+
+</div>
+
+<div class="container">
+<span class="column1" style="font-weight: bold;">TAKE OFF WEIGHT ACTUAL</span>
+<span class="column" style="font-weight: bold;text-align:right">${datas.Tow.toFixed()}</span>
+<span class="column" style="flex: 2; font-weight: normal;">MAX ${
+  datas.MTow
+}</span>
+<div style="flex: 4;flex-direction: row;">
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+
+</div>
+
+</div>
+
+<div class="container1">
+<span class="column1" style="font-weight: normal;">TRIP FUEL</span>
+<span class="column" style="font-weight: normal;text-align:right">${datas.TripFuel}</span>
+<div style="flex:4;flex-direction: row;";>
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+    <span class="column" style="font-weight: normal;"></span>
+
+</div>
+
+
+</div>
+<div class="container">
+<span class="column1" style="font-weight: bold;">LANDING WEIGHT ACTUAL</span>
+<span class="column" style="font-weight: normal;text-align:right">${datas.Tow.toFixed() - datas.TripFuel}</span>
+<span class="column" style="flex: 2; font-weight: normal;">MAX ${
+  datas.Olw
+}</span>
+<div style="flex: 4;flex-direction: row;">
+    <span class="column" style="font-weight: normal;"></span>
+<span class="column" style="font-weight: normal;"></span>
+<span class="column" style="font-weight: normal;"></span>
+<span class="column" style="font-weight: normal;"></span>
+</div>
+
+</div>
+
+<div class="container">
+<span class="column1" style="font-weight: bold;">BALANCE AND WEIGHT CONDITIONS</span>
+<span class="column" style="font-weight: bold;">LAST MINUTE CHANGES</span>
+</div>
+
+<div class="container8">
+<div style="display:flex;flex:1;flex-direction:row;">
+  <span style="font-weight: normal; width: 60; color: black;">DOI</span>
+  <span style="font-weight: normal; color: black;">${(datas.AdjustTotalIndex +datas.OewIndex).toFixed(2)}</span>
+</div>
+
+<div style="display:flex;flex-direction:row;justify-content:space-evenly;">
+<span  style=" font-weight: bold;margin-right:10">DEST</span>
+<span style="font-weight: bold;margin-right:10">SPEC</span>
+<span style="font-weight: bold;margin-right:10">CAB/CPT</span>
+<span  style="font-weight: bold;">+/-WEIGHT</span>
+</div>
+</div>
+<div class="container1">
+<span style="color: black; width: 60;">LIZFW</span>
+<span style=" color: black;">${datas.ZfwIndex.toFixed(2)}</span>
+</div>
+
+<div class="container1">
+<span style="color: black; width: 60;">LITOW</span>
+<span style="margin-right: 70; color: black;">${datas.TowIndex.toFixed(2)}</span>
+</div>
+
+<div class="container1">
+<span style="color: black; width: 60;">LILW</span>
+<span style="margin-right: 70; color: black;">${datas.LwIndex.toFixed(2)}</span>
+</div>
+
+<div style="display:flex;flex-direction: row;">
+<div style="flex: 1; flex-direction: row;margin:5px">
+  <span style="flex: 1; justify-content: center; align-items: center; padding:6px; color: black;">FWD LMT</span>
+  <span style="flex: 1; justify-content: center; align-items: center; padding:6px; color: black;">ZFW MAC</span>
+  <span style="flex: 1; justify-content: center; align-items: center; padding:6px; color: black;">AFT LMT</span>
+</div>
+<div style="flex: 1; justify-content: center; align-items: center;"></div>
+</div>
+
+<div style="display:flex;flex-direction: row;">
+<div style="flex: 1; flex-direction: row;">
+  <span style="flex: 1;text-align:center; padding: 6px; color: black;margin-left:10px
+ ">${datas.ZfwCGFwdLimit.toFixed(2)}</span>
+  <span style="flex: 1;text-align:center ; padding: 6px; color: black; font-weight: bold;
+  margin-left:20px">${ datas.ZfwCG.toFixed(2)}</span>
+  <span style="flex: 1;text-align:center; padding: 6px; color: black;
+  margin-left:30px">${datas.ZfwCGAftLimit.toFixed(2)}</span>
+</div>
+<div style="flex: 1; justify-content: center; align-items: center;"></div>
+</div>
+<div style="display:flex;flex-direction: row;">
+<div style="flex: 1; flex-direction: row;">
+  <span style="flex: 1; justify-content: center; align-items: center; padding: 6px; color: black;">FWD LMT</span>
+  <span style="flex: 1; justify-content: center; align-items: center; padding: 6px; color: black;">TOWMAC</span>
+  <span style="flex: 1; justify-content: center; align-items: center; padding:6px; color: black;">AFT LMT</span>
+</div>
+<div style="flex: 1; justify-content: center; align-items: center;">
+  <span style="font-weight: bold; color: black;text-align:center">ADJUSTMENTS TO DOW</span>
+</div>
+</div>
+
+<div style="display:flex;flex-direction: row;">
+<div style="flex: 1; flex-direction: row;">
+  <span style="flex: 1;  padding:6px; color: black;text-align:center;margin-left:10px">${
+    datas.TowCGFwdLimit.toFixed(2)
+  }</span>
+  <span style="flex: 1; padding:6px; color: black; font-weight: bold;text-align:center;margin-left:20px">${
+    datas.TowCG.toFixed(2)
+  }</span>
+  <span style="flex: 1; padding:6px; color: black;text-align:center;margin-left:30px">${
+    datas.TowCGAftLimit.toFixed(2)
+  }</span>
+</div>
+<div style="flex: 1; justify-content: center; align-items: center;"></div>
+</div>
+
+<div style="display:flex;flex-direction: row;">
+<div style="flex: 1; flex-direction: row;">
+  <span style="flex: 1; justify-content: center; align-items: center; padding:6px; color: black;">FWD LMT</span>
+  <span style="flex: 1; justify-content: center; align-items: center; padding:6px; color: black;">LWTMAC</span>
+  <span style="flex: 1; justify-content: center; align-items: center; padding:6px; color: black;">AFT LMT</span>
+</div>
+<div style="flex: 1; justify-content: center; align-items: center;"></div>
+</div>
+
+<div style="display:flex;flex-direction: row;">
+<div style="flex: 1; flex-direction: row;">
+  <span style="flex: 1; padding:6px; color: black;text-align:center;margin-left:10px ">${datas.LwCGFwdLimit.toFixed(2)}</span>
+  <span style="flex: 1;  padding:6px; color: black; font-weight: bold;text-align:center ;margin-left:20px">${
+    datas.LwCG.toFixed(2)
+  }</span>
+  <span style="flex: 1; padding:6px; color: black;text-align:center;margin-left:30px">${
+    datas.LwCGAftLimit.toFixed(2)
+  }</span>
+</div>
+<div style="flex: 1; justify-content: center; align-items: center;"></div>
+</div>
+<div style="margin:10px;">
+<div style="font-weight: bold; color: black;">
+  UNDER LOAD BEFORE LMC ${datas.Rtow - datas.Tow.toFixed()}
+</div>
+</div>
+${
+datas.AcftPurpose !== 'FREIGHTER'
+  ? `
+  <div class="container4">
+      <p style="margin-right: 70px; color: black;">ZONE</p>
+      <div style="justify-content: space-between; flex-direction: row; flex: 1;">
+          ${datas.CabinStdLimits.map((item, index) => `
+              <p class="column" style="font-weight: normal;">
+                  Z${index + 1}=
+                  ${parseFloat(datas.AdultInCabins[i]) +
+                    parseFloat(datas.ChildInCabins[i]) +
+                    parseFloat(datas.AdjustCrewInCabins[i])}
+              </p>
+          `).join('')}
+      </div>
+  </div>
+  `
+  : ''
+}
+
+
+<div style="display: flex; flex-direction: row;">
+<div style="flex: 1;">
+  <p>LDM</p>
+  <p></p>
+</div>
+<div style="flex: 3; display: flex; flex-direction: row;">
+
+  ${datas.CompStdLimits.map((item, index) => `
+      <p style="flex: 1; text-align: center;">CPT ${index + 1}</p>
+  `)}
+  <p style="flex: 0.5;">TTL</p>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: row;">
+<div style="flex: 1; display: flex; flex-direction: row;">
+  <p style="flex: 1.3;">DEST</p>
+  <p style="flex: 1;">A+C</p>
+  <p style="flex: 1;">INF</p>
+  <p style="flex: 1;">TTL</p>
+</div>
+<div style="flex: 3; display: flex; flex-direction: row;">
+  
+  ${datas.CompStdLimits.map((item, index) => `
+      <p style="flex: 1";>BAG</p>
+      <p style="flex: 1";>CGO</p>
+  `)}
+  <p style="flex: 0.5;"></p>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: row;">
+<div style="flex: 1; display: flex; flex-direction: row;">
+ 
+  <p style="flex: 1.3;">${datas.ArrArpt}</p>
+  
+  <p style="flex: 1;">${parseInt(totalAdult) + parseInt(totalChild)}</p>
+  <p style="flex: 1;">${parseInt(totalInfant)}</p>
+  <p style="flex: 1;">${parseInt(totalAdult) + parseInt(totalChild) + parseInt(totalInfant)}</p>
+</div>
+<div style="flex: 3; display: flex; flex-direction: row;">
+ 
+  ${datas.CompStdLimits.map(() => `
+      <p style="flex: 1;"></p>
+      <p style="flex: 1;"></p>
+  `)}
+  <p style="flex: 0.5;"></p>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+<div style="flex: 1; display: flex; flex-direction: row; justify-content: space-between; padding: 5px;">
+<span style="font-weight: normal; color: black;">TOT PAX -</span>
+<span style="font-weight: normal; color: black;">TOT BAG -</span>
+<span style="font-weight: normal; color: black;">TOT CGO -</span>
+</div>
+
+<div style="display: flex; padding: 5px;">
+<span style="font-weight: normal; color: black;">
+  APPROVED BY DELHI DAW VIDE LETTER
+  <span style="font-weight: bold; color: black;"> DEL-11011(13)/9/2019-DAW-NR/1348 DATED 30-12-2020.</span>
+</span>
+</div>
+
+<div style="display: flex; padding: 5px;">
+<span style="font-weight: normal; color: black;">APPROVED LMC LIMITS: ${
+  datas.toleranceLimits
+}</span>
+</div>
+
+<div style="margin: 10px ;">
+<div style="font-weight: normal; flex: 4;">SI:</div>
+</div>
+
+<div style="margin: 10px ;">
+<div style="font-weight: normal; flex: 4;">
+  I CERTIFY THAT HIS AIRCRAFT HAS BEEN LOADED IN ACCORDANCE WITH THE AFM
+</div>
+</div>
+
+
+</div>
+<div class="container5">
+<div style="flex:1"></div>
+<div style="flex:1"></div>
+<div style="flex:1">
+ <img src='file:///${signaturePath}' alt="Signature Image" style="display: block;
+ margin-left: auto;
+ margin-right: auto;
+ width: 70%;">
+</div>
+</div>
+  </div>
+  <div class="container5">
+  <div class="column6">SIGNATURE</div>
+  <div class="column6">SIGNATURE</div>
+  <div class="column6">SIGNATURE</div>
+</div>
+<div class="container5">
+  <div class="column ">TRIM OFFICER</div>
+  <div class="column ">LOAD OFFICER</div>
+  <div class="column ">CAPTAIN</div>
+</div>
+<div class="container5">
+  <div class="column7">${datas.TrimOfficer}</div>
+  <div class="column7">${datas.TrimOfficer}</div>
+  <div class="column7">${datas.Captain}</div>
+</div>
+<div style="display: flex; flex-direction: row;">
+<div style="flex:1;margin-right:10px">SLT NO</div>
+<div style="flex:1; border-bottom: 1px dotted black;
+border-top: none; 
+border-left: none; 
+border-right: none;
+    border-top-color: black;"></div>
+<div  style="flex:1;">TIME</div>
+<div style="flex: 1;border-bottom: 1px dotted black;
+border-top: none; 
+border-left: none; 
+border-right: none;
+    border-top-color: black;"></div>
+<div style="flex: 1;">SLT/LCC</div>
+<div style="flex: 1;border-bottom: 1px dotted black;
+border-top: none; 
+border-left: none; 
+border-right: none;
+    border-top-color: black;"></div>
+<div style="flex: 1;">TIME</div>
+<div style="flex: 1;border-bottom: 1px dotted black;
+border-top: none; 
+border-left: none; 
+border-right: none;
+    border-top-color: black;"></div>
+<div style="flex: 1;">ATPL/FATA</div>
+<div style="flex: 1;border-bottom: 1px dotted black;
+border-top: none; 
+border-left: none; 
+border-right: none;
+    border-top-color: black;"></div>
+<div style="flex: 1;">TIME</div>
+<div style="flex: 1;border-bottom: 1px dotted black;
+border-top: none; 
+border-left: none; 
+border-right: none;
+    border-top-color: black;">
+    </div>
+
+</div>

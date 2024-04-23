@@ -7,7 +7,8 @@ const localDB = {
         altFlightPlanTable: 'altFlightPlanTable',
         mainFlightRVSMTable: 'mainFlightRVSMTable',
         altFlightRVSMTable: 'altFlightRVSMTable',
-        faultReportTable: 'faultReportTable'
+        faultReportTable: 'faultReportTable',
+        roster_details:'roster_details'
     }
 };
 

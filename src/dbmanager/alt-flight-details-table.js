@@ -51,7 +51,7 @@ export const onCreateALTFlightDetailsTable = async () => {
  * @param {*} altFlightData
  */
 export const onInsertALTFlightDetailsData = async altFlightData => {
-  console.log('onInsertALTFlightDetailsData altFlightData', altFlightData);
+  // console.log('onInsertALTFlightDetailsData altFlightData', altFlightData);
 
   if (altFlightData.length == 0) {
     return;

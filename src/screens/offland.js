@@ -443,7 +443,7 @@ const createJsonWithStatus = (flightData) => {
           <TouchableOpacity
             style={{ ...styles[`listItemContainer${theme}`], borderTopColor: index === 0 ? borderColor : null, borderTopWidth: index === 0 ? 1 : 0 }}
             onPress={() => {
-              navigation.navigate('OFPComponent', { selectedFlight: item });
+              navigation.navigate('Pdf', { selectedFlight: item });
             }}
           >
             <View style={{ ...styles[`listItemStyle${theme}`], ...styles[`firstListItemStyle${theme}`], width: '20%', backgroundColor: isActiveItem ? activeItemBgColor : firstItemNonActiveBgColor }}>

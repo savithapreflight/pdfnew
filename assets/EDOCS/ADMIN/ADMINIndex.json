@@ -1,0 +1,22 @@
+{
+  "Items": {
+    "Item": [
+      {
+        "key": "crlsAdmin",
+        "title": "CIRCULARS",
+        "abbr": "",
+        "reference": ""
+      },
+      {
+        "key": "hrpolicies",
+        "title": "HR POLICIES",
+        "abbr": "",
+        "reference": "HRPolicy.docx"
+      },
+      {
+        "key": "forms",
+        "title": "FORMS"
+      }
+    ]
+  }
+}

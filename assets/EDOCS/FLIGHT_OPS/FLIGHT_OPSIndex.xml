@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<Items>
+    <Item>
+        <key>AFM</key>
+        <title>AFM</title>
+        <abbr></abbr>
+        <reference>AFM/AFMIndex.json</reference>
+    </Item>
+    <Item>
+        <key>FCOM</key>
+        <title>FCOM</title>
+        <abbr></abbr>
+        <reference></reference>
+        
+    </Item>
+    <Item>
+        <key>MMEL</key>
+        <title>MMEL</title>
+    </Item>
+</Items>
+
+
